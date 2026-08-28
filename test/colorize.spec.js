@@ -3,7 +3,6 @@ import { assert } from 'chai';
 import { colorize, colorizeToArray } from '../lib/colorize.js';
 
 describe('colorizeToArray', () => {
-
   it("should return ' <value>' for a scalar value", () => {
     assert.deepEqual([' 42'], colorizeToArray(42));
   });
@@ -49,34 +48,46 @@ describe('colorizeToArray', () => {
   });
 
   it("should return '+<inserted item>' for an array diff", () => {
-    assert.deepEqual([' [', '   10', '+  20', '   30', ' ]'], colorizeToArray([[' ', 10], ['+', 20], [' ', 30]]));
+    assert.deepEqual(
+      [' [', '   10', '+  20', '   30', ' ]'],
+      colorizeToArray([
+        [' ', 10],
+        ['+', 20],
+        [' ', 30],
+      ])
+    );
   });
 
   it("should return '-<deleted item>' for an array diff", () => {
-    assert.deepEqual([' [', '   10', '-  20', '   30', ' ]'], colorizeToArray([[' ', 10], ['-', 20], [' ', 30]]));
+    assert.deepEqual(
+      [' [', '   10', '-  20', '   30', ' ]'],
+      colorizeToArray([
+        [' ', 10],
+        ['-', 20],
+        [' ', 30],
+      ])
+    );
   });
 
-  it("should handle an array diff with subobject diff", () => {
-    const input = [[" "], ["~", { "foo__added": 42 }], [" "]];
-    const expected = [" [", "   ...", "   {", "+    foo: 42", "   }", "   ...", " ]"];
+  it('should handle an array diff with subobject diff', () => {
+    const input = [[' '], ['~', { foo__added: 42 }], [' ']];
+    const expected = [' [', '   ...', '   {', '+    foo: 42', '   }', '   ...', ' ]'];
     assert.deepEqual(colorizeToArray(input), expected);
   });
 
   it("should collapse long sequences of identical subobjects into one '...'", () => {
-    const input = [[" "], [" "], [" "], [" "], [" "], [" "], [" "], ["~", { "foo__added": 42 }], [" "]];
-    const expected = [" [", "   ... (7 entries)", "   {", "+    foo: 42", "   }", "   ...", " ]"];
+    const input = [[' '], [' '], [' '], [' '], [' '], [' '], [' '], ['~', { foo__added: 42 }], [' ']];
+    const expected = [' [', '   ... (7 entries)', '   {', '+    foo: 42', '   }', '   ...', ' ]'];
     assert.deepEqual(colorizeToArray(input, { maxElisions: 5 }), expected);
   });
 });
 
-
 describe('colorize', () => {
-
-  it("should return a string with ANSI escapes", () => {
-    assert.equal(colorize({ foo: { __old: 42, __new: 10 } }), " {\n\u001b[31m-  foo: 42\u001b[39m\n\u001b[32m+  foo: 10\u001b[39m\n }\n");
+  it('should return a string with ANSI escapes', () => {
+    assert.equal(colorize({ foo: { __old: 42, __new: 10 } }), ' {\n\u001b[31m-  foo: 42\u001b[39m\n\u001b[32m+  foo: 10\u001b[39m\n }\n');
   });
 
-  it("should return a string without ANSI escapes on { color: false }", () => {
-    assert.equal(colorize({ foo: { __old: 42, __new: 10 } }, { color: false }), " {\n-  foo: 42\n+  foo: 10\n }\n");
+  it('should return a string without ANSI escapes on { color: false }', () => {
+    assert.equal(colorize({ foo: { __old: 42, __new: 10 } }, { color: false }), ' {\n-  foo: 42\n+  foo: 10\n }\n');
   });
 });

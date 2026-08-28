@@ -2,4 +2,4 @@
 
 import { diffString } from '../lib/index.js';
 
-diffString(process.argv.slice(2))
+diffString(process.argv.slice(2));
