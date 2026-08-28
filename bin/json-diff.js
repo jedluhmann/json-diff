@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-import { diffString } from '../lib/index.js';
+// import { diffString } from '../lib/index.js';
+import { CLI } from '../lib/cli.js';
 
-diffString(process.argv.slice(2));
+CLI(process.argv.slice(2));
