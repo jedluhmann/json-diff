@@ -1,2 +1,5 @@
 #!/usr/bin/env node
-require('../lib/cli')(process.argv.slice(2));
+
+import { diffString } from '../lib/index.js';
+
+diffString(process.argv.slice(2))
