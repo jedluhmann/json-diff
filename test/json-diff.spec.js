@@ -13,23 +13,23 @@ describe('diff', () => {
 
   describe('with simple scalar values', () => {
     it('should return undefined for two identical numbers', () => {
-      let result = jsonDiff.diff(42, 42).result;
+      const result = jsonDiff.diff(42, 42).result;
       expect(result).to.be.undefined;
     });
 
     it('should return undefined for two identical strings', () => {
-      let result = jsonDiff.diff('foo', 'foo').result;
+      const result = jsonDiff.diff('foo', 'foo').result;
       expect(result).to.be.undefined;
     });
 
     it('should return undefined for two identical dates', () => {
       const date = new Date();
-      let result = jsonDiff.diff(date, date).result;
+      const result = jsonDiff.diff(date, date).result;
       expect(result).to.be.undefined;
     });
 
     it('should return { __old: <old value>, __new: <new value> } object for two different numbers', () => {
-      let result = jsonDiff.diff(42, 10).result;
+      const result = jsonDiff.diff(42, 10).result;
       expect(result).to.deep.equal({ __old: 42, __new: 10 });
     });
 
@@ -37,7 +37,7 @@ describe('diff', () => {
       const oldDate = new Date();
       const newDate = new Date();
       newDate.setFullYear(oldDate.getFullYear() - 4);
-      let result = jsonDiff.diff(oldDate, newDate).result;
+      const result = jsonDiff.diff(oldDate, newDate).result;
       expect(result).to.deep.equal({ __old: oldDate, __new: newDate });
     });
   });
@@ -548,7 +548,7 @@ describe('diff({keysOnly: true})', () => {
       assert.deepEqual([[' '], ['+', { bar: 20 }], [' ']], diff([{ foo: 10 }, { bletch: 30 }], [{ foo: 10 }, { bar: 20 }, { bletch: 30 }], { keysOnly: true }));
     });
 
-    it("should return [..., ['~', <diff>], ...] for two arrays when an item has been modified", () => {
+    it("should return undefined for two arrays when an item has been modified", () => {
       assert.deepEqual(
         undefined,
         diff(
