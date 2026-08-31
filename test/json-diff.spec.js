@@ -548,7 +548,7 @@ describe('diff({keysOnly: true})', () => {
       assert.deepEqual([[' '], ['+', { bar: 20 }], [' ']], diff([{ foo: 10 }, { bletch: 30 }], [{ foo: 10 }, { bar: 20 }, { bletch: 30 }], { keysOnly: true }));
     });
 
-    it("should return undefined for two arrays when an item has been modified", () => {
+    it('should return undefined for two arrays when an item has been modified', () => {
       assert.deepEqual(
         undefined,
         diff(
