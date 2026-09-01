@@ -183,6 +183,69 @@ describe('diff', () => {
       );
       assert.deepEqual(result, [[' '], ['~', { foo: { __old: 20, __new: 21 } }], [' ']]);
     });
+
+    it('should correctly pick best match based on similarity during scalarize, i.e. class obj2[2] should not be selected as best match for obj1[0], instead order should remain unchanged with added class property for obj1[0]', () => {
+      const obj1 = [
+        {
+          type: 'collection',
+          format: 'paragraph',
+          data: [
+            {
+              type: 'verse',
+              vn: 2,
+            },
+          ],
+        },
+        {
+          type: 'linebreak',
+          tag: 'br',
+        },
+        {
+          type: 'collection',
+          format: 'poetry',
+          class: 'poetry',
+          data: [
+            {
+              type: 'line',
+              ln: 1,
+            },
+          ],
+        },
+      ];
+
+      const obj2 = [
+        {
+          type: 'collection',
+          format: 'paragraph',
+          class: 'prose', // This is the only difference
+          data: [
+            {
+              type: 'verse',
+              vn: 2,
+            },
+          ],
+        },
+        {
+          type: 'linebreak',
+          tag: 'br',
+        },
+        {
+          type: 'collection',
+          format: 'poetry',
+          class: 'poetry',
+          data: [
+            {
+              type: 'line',
+              ln: 1,
+            },
+          ],
+        },
+      ];
+
+      const result = diff(obj1, obj2);
+
+      assert.deepEqual(result, [['~', { class__added: 'prose' }], [' '], [' ']]);
+    });
   });
 
   describe('with reported bugs', () => {
