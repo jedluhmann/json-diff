@@ -246,6 +246,22 @@ describe('diff', () => {
 
       assert.deepEqual(result, [['~', { class__added: 'prose' }], [' '], [' ']]);
     });
+
+    it("should return [[' ', <unchanged item>], ['~', <diff>], [' ', <unchanged item>]] for two arrays when an item has been modified", () => {
+      assert.deepEqual(
+        diff(
+          [{"holes": [{ "depth": 11.5, "diameter": 8, "start": { "x": 218, "y": 241, "z": 9 }, "end": { "x": 220, "y": 241, "z": -2.5 }, "plankFaceId": "0", "name": "短木销_修改", "type": "PLANK" }, { "depth": 11.5, "diameter": 8, "start": { "x": 218, "y": 241, "z": 9 }, "end": { "x": 220, "y": 241, "z": -2.5 }, "plankFaceId": "0", "name": "短木销_修改", "type": "PLANK" }]}],
+          [{"holes": [{ "depth": 11.5, "diameter": 8, "start": { "x": 218, "y": 241, "z": 9 }, "end": { "x": 218, "y": 241, "z": -2.5 }, "plankFaceId": "0", "name": "短木销", "type": "PLANK" }, { "depth": 11.5, "diameter": 8, "start": { "x": 218, "y": 241, "z": 9 }, "end": { "x": 218, "y": 241, "z": -2.5 }, "plankFaceId": "0", "name": "短木销", "type": "PLANK" }]}],
+          {}
+        ),
+        [["~", {
+          "holes": [
+            ["~", {"end": {"x": {"__old": 220, "__new": 218}}, "name": {"__old": "短木销_修改", "__new": "短木销"}}],
+            ["~", {"end": {"x": {"__old": 220, "__new": 218}}, "name": {"__old": "短木销_修改", "__new": "短木销"}}]
+          ]
+        }]]
+      )
+    });
   });
 
   describe('with reported bugs', () => {
