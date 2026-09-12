@@ -4,3 +4,5 @@ node_modules
 coverage.html
 .idea
 coverage
+.DS_Store
+debug
