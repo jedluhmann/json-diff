@@ -107,6 +107,24 @@ console.log(diff({ foo: 'bar' }, { foo: 'baz' }));
 - "outputKeys" option to always output the given keys for an object that has differences
 - reasonable test coverage (far from 100%, though)
 
+## Conceptual Overview (Core Algorithm)
+
+                 diff(old, new)
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+          objects             arrays
+             │                   │
+       compare keys       match elements
+             │                   │
+       recursively         recursively
+             │                   │
+             └─────────┬─────────┘
+                       │
+                    scalars
+                       │
+                compare values
+
 ## Output Language in Raw-json mode ("full" mode)
 
 ### ARRAYS
