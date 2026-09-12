@@ -25,7 +25,8 @@
   "dependencies": {
     "@ewoudenberg/difflib": "0.1.0",
     "colors": "^1.4.0",
-    "dreamopt": "~0.8.0"
+    "dreamopt": "~0.8.0",
+    "jq-wasm": "^3.0.0-jq-1.8.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
