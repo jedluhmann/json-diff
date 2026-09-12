@@ -1,35 +1,40 @@
 import fs from 'fs';
 import path from 'path';
 import { assert, expect } from 'chai';
-import { JsonDiff, diff, diffString } from '../lib/index.js';
+import { JsonDiff } from '../lib/JsonDiff.js';
+import { colorize } from '../lib/colorize.js';
+
+const jsonDiff = new JsonDiff({});
+
+const diff = (obj1, obj2, options = {}) => {
+  jsonDiff.options = options;
+  return jsonDiff.diff(obj1, obj2).result;
+};
+
+const diffString = (obj1, obj2, options = {}) => {
+  return colorize(diff(obj1, obj2, options), options);
+};
 
 describe('diff', () => {
-  let jsonDiff;
-
-  // Instantiates a new class before each individual test case
-  beforeEach(() => {
-    jsonDiff = new JsonDiff({});
-  });
-
   describe('with simple scalar values', () => {
     it('should return undefined for two identical numbers', () => {
-      const result = jsonDiff.diff(42, 42).result;
+      const result = diff(42, 42);
       expect(result).to.be.undefined;
     });
 
     it('should return undefined for two identical strings', () => {
-      const result = jsonDiff.diff('foo', 'foo').result;
+      const result = diff('foo', 'foo');
       expect(result).to.be.undefined;
     });
 
     it('should return undefined for two identical dates', () => {
       const date = new Date();
-      const result = jsonDiff.diff(date, date).result;
+      const result = diff(date, date);
       expect(result).to.be.undefined;
     });
 
     it('should return { __old: <old value>, __new: <new value> } object for two different numbers', () => {
-      const result = jsonDiff.diff(42, 10).result;
+      const result = diff(42, 10);
       expect(result).to.deep.equal({ __old: 42, __new: 10 });
     });
 
@@ -37,7 +42,7 @@ describe('diff', () => {
       const oldDate = new Date();
       const newDate = new Date();
       newDate.setFullYear(oldDate.getFullYear() - 4);
-      const result = jsonDiff.diff(oldDate, newDate).result;
+      const result = diff(oldDate, newDate);
       expect(result).to.deep.equal({ __old: oldDate, __new: newDate });
     });
   });
@@ -719,9 +724,6 @@ describe('diffString', () => {
   const b = JSON.parse(readExampleFile('b.json'));
   const big_a = JSON.parse(readExampleFile('big_a.json'));
   const big_b = JSON.parse(readExampleFile('big_b.json'));
-  // Get duplicate copies for the precision test - numbers within these are altered (rounded) by the precision operation
-  const aprec = JSON.parse(readExampleFile('a.json'));
-  const bprec = JSON.parse(readExampleFile('b.json'));
 
   it('should produce the expected result for the example JSON files', () => {
     assert.equal(diffString(a, b, { color: false, full: true }), readExampleFile('full-result.jsdiff'));
@@ -733,7 +735,7 @@ describe('diffString', () => {
   });
 
   it('should produce the expected colored result for the example JSON files', () => {
-    assert.equal(diffString(aprec, bprec, { color: true, full: true }), readExampleFile('full-result-colored.jsdiff'));
+    assert.equal(diffString(a, b, { color: true, full: true }), readExampleFile('full-result-colored.jsdiff'));
   });
 
   it('return an empty string when no diff found', () => {
