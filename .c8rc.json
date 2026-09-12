@@ -1,0 +1,11 @@
+{
+  "include": ["lib/**/*.js"],
+  "exclude": ["/test/**/*.spec.js"],
+  "extension": [".js"],
+  "check-coverage": true,
+  "lines": 85,
+  "statements": 85,
+  "functions": 85,
+  "branches": 85,
+  "reporter": ["lcov", "text", "text-summary", "html"]
+}
