@@ -7,7 +7,7 @@ Does exactly what you think it does:
 > **Notice:** This is a modernized, actively maintained fork of the original `json-diff` project. 
 
 ### Why this fork?
-The original repository has accumulated unaddressed bugs and lacks recent updates. This fork was created to keep the tool safe, modern, and reliable. 
+The original repository has accumulated unaddressed bugs and lacks recent updates. This fork was created to provide the community with an active release cycle for critical bug fixes and architectural modernizations. 
 
 **Key Improvements:**
 * **Fully Modernized Engine:** Re-architected code structure using modern JavaScript standards.
