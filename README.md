@@ -4,11 +4,36 @@ Does exactly what you think it does:
 
 ![Screenshot](https://github.com/andreyvit/json-diff/raw/master/doc/screenshot.png)
 
+> **Notice:** This is a modernized, actively maintained fork of the original `json-diff` project. 
+
+### Why this fork?
+The original repository has accumulated unaddressed bugs and lacks recent updates. This fork was created to keep the tool safe, modern, and reliable. 
+
+**Key Improvements:**
+* **Fully Modernized Engine:** Re-architected code structure using modern JavaScript standards.
+* **Standalone Component:** Re-architected code to allow the `JsonDiff` class to be used as a standalone component in addition to the CLI.
+* **Added a Debug Option:** The debug feature ouputs a pivot table that displays the fuzzy scores that are computed when diffing arrays. When combined with the -v flag, the raw data that the pivot table is derived from is displayed as well. This is an incredibly useful feature for understanding how the diffing algorithm works.
+* **Bug Fixes:** Resolves critical long-standing issues, similar to those documented in the open PR [\[fix\]\[102\]Fix deep diffing issue for obj in array](https://github.com/andreyvit/json-diff/pull/125), which addresses [https://github.com/andreyvit/json-diff/issues/102](https://github.com/andreyvit/json-diff/issues/102).
+* **Playground:** New feature that facilitates learning, experimentation and debugging.
+
+---
+
 ## Installation
 
-```sh
-    npm install -g json-diff
+Replace the original tool by installing this package globally:
+
+```bash
+bun add -g @jedluhmann/json-diff
 ```
+
+## Usage
+
+Once installed, you can use it exactly like the original tool:
+
+```bash
+json-diff file1.json file2.json
+```
+*(Note: Depending on your system configuration, you can also execute it via `bunx @your-username/json-diff file1.json file2.json` without installing it globally).*
 
 ## Contribution policy
 
@@ -16,9 +41,8 @@ Does exactly what you think it does:
 
 2. I will merge any pull request that adds something useful, does not break existing things, has reasonable code quality and provides/updates tests where appropriate.
 
-3. Anyone who gets a significant pull request merged gets commit access to the repository.
 
-## Usage
+## CLI Usage
 
 Simple:
 
@@ -58,50 +82,113 @@ Detailed:
     -k, --keys-only       Compare only the keys, ignore the differences in values
     -K, --keep-unchanged-values   Instead of omitting values that are equal, output them as they are
     -p, --precision DECIMALS  Round all floating point numbers to this number of decimal places prior
-                                to comparison
+                              to comparison
+    -d, --debug             Output fuzzy match details for array diffs, can be combined with -v for
+                            additional info #var(debug)
 
     -h, --help            Display this usage information
 ```
 
-In javascript (ES5):
+## JavaScript Usage:
+
+In addition to the CLI, json-diff can also be included in your javascript applications.
 
 ```js
-var jsonDiff = require('json-diff');
+import { JsonDiff } from '@jedluhmann/json-diff';
+let options = {}, result;
+const jsonDiff = new JsonDiff(options);
 
-console.log(jsonDiff.diffString({ foo: 'bar' }, { foo: 'baz' }));
-// Output:
-//  {
-// -  foo: "bar"
-// +  foo: "baz"
-//  }
+console.log(`\nawait jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });`);
+result = await jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });
 
 // As above, but without console colors
-console.log(jsonDiff.diffString({ foo: 'bar' }, { foo: 'baz' }, { color: false }));
+jsonDiff.options = { color: false };
+console.log(`\n\nSame as before, but without color`);
+result = await jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });
 
-// Raw output:
-console.log(jsonDiff.diff({ foo: 'bar', b: 3 }, { foo: 'baz', b: 3 }));
-// Output:
-// { foo: { __old: 'bar', __new: 'baz' } }
+// Raw JSON output option:
+jsonDiff.options = { raw: true };
+console.log(`\n\nRaw JSON Output`);
+result = await jsonDiff.exec({ foo: 'bar', b: 3 }, { foo: 'baz', b: 3 });
 
-// Passing in the "full" option:
-console.log(jsonDiff.diff({ foo: 'bar', b: 3 }, { foo: 'baz', b: 3 }, { full: true }));
-// Output:
-// { foo: { __old: 'bar', __new: 'baz' }, b: 3 }
+// Raw JSON output option together with the "full" option:
+jsonDiff.options = { raw: true, full: true };
+console.log(`\n\nRaw JSON Output together with the "full" option`);
+result = await jsonDiff.exec({ foo: 'bar', b: 3 }, { foo: 'baz', b: 3 });
 ```
 
-In javascript (ES6+):
+Output from above:
+
+```json
+result = await jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });
+ {
+-  foo: "bar"
++  foo: "baz"
+ }
+
+
+Same as before, but without color
+ {
+-  foo: "bar"
++  foo: "baz"
+ }
+
+
+Raw JSON Output Option
+{
+  "foo": {
+    "__old": "bar",
+    "__new": "baz"
+  }
+}
+
+
+Raw JSON Output Option together with the "full" option
+{
+  "foo": {
+    "__old": "bar",
+    "__new": "baz"
+  },
+  "b": 3
+}
+```
+
+## Programmatic Access
+
+When creating scripts to automate json-diff, you can silence the output by setting `jsonDiff.options = { silent: true, debug: false }`.
+
+You can also call replace the call to `exec()` with `diff()`. The only difference is that `jsonDiff.diff()` is synchronous and the return value is a diff object with the following properties: score, result, and equal. 
+
+Heres a quick example:
 
 ```js
-import { diffString, diff } from 'json-diff';
+import { JsonDiff } from '@jedluhmann/json-diff';
+let options = {}, result;
+const jsonDiff = new JsonDiff(options);
 
-console.log(diffString({ foo: 'bar' }, { foo: 'baz' }));
-console.log(diff({ foo: 'bar' }, { foo: 'baz' }));
+let objA = { foo: 'bar' };
+let objB = { foo: 'baz' };
+
+let diff = jd.diff(objA, objB);
+let { score, result, equal } = diff;
+console.log(`score: ${score}, result: ${JSON.stringify(result)}, equal: ${equal}`);
 ```
+
+Output:
+
+```
+score: 0, result: {"foo":{"__old":"bar","__new":"baz"}}, equal: false
+```
+
+## Playground
+
+The script, `playground/jd-debug.ts`, offers a convenient way to experiment with json-diff and provides some helpful examples to get you started. When this script has focus in VS Code, you can debug json-diff via the "Debug File" launch config. Simply set your break points and click the debug button.
+
 
 ## Features
 
 - colorized, diff-like output
-- fuzzy matching of modified array elements (when array elements are object hierarchies)
+- fuzzy matching of modified array elements (when array elements are object hierarchies) along with a debug option for displaying the fuzzy matches pivot table
 - "keysOnly" option to compare only the json structure (keys), ignoring the values
 - "full" option to output the entire json tree, not just the deltas
 - "outputKeys" option to always output the given keys for an object that has differences
@@ -109,23 +196,33 @@ console.log(diff({ foo: 'bar' }, { foo: 'baz' }));
 
 ## Conceptual Overview (Core Algorithm)
 
-                 diff(old, new)
-                       │
-             ┌─────────┴─────────┐
-             │                   │
-          objects             arrays
-             │                   │
-       compare keys       match elements
-             │                   │
-       recursively         recursively
-             │                   │
-             └─────────┬─────────┘
-                       │
-                    scalars
-                       │
-                compare values
+                      exec(old, new)
+                            |
+                            |
+        ┌──────────>  diff(old, new) <──────────┐
+        │                   │                   │
+        │         ┌─────────┴─────────┐         │
+        │         │                   │         │
+        │      objects             arrays       │
+        │         │                   │         │
+        │   compare keys       match elements   │
+        │         │                   │         │
+        └─── recursively         recursively ───┘
+                  │                   │
+                  └─────────┬─────────┘
+                            │
+                         scalars
+                            │
+                      compare values
 
-## Output Language in Raw-json mode ("full" mode)
+## Raw JSON Output Mode
+
+CLI option: -j or --raw-json
+
+The Raw JSON mode outputs the return result of the `diff()`, as opposed to the standard red(-)/green(+) output like you see in a visual diff tool. 
+
+This is useful for gainging a better understanding of how json-diff works as well as for programmatic use. Adding the `--full` option, includes all values (not just the differences). The examples below show return values for simple arrays and objects, but note that arrays and objects can be nested in one and another, in which case you will see a combination of the two.
+
 
 ### ARRAYS
 
@@ -135,12 +232,12 @@ Unless two arrays are equal, all array elements are transformed into 2-tuple arr
 - The second element is the old (-), new (+), altered sub-object (~), or unchanged (' ') value
 
 ```sh
-    json-diff.js --full --raw-json <(echo '[1,7,3]') <(echo '[1,2,3]')
+    json-diff --full --raw-json <(echo '[1,7,3]') <(echo '[1,2,3]')
          [ [ " ", 1 ], [ "-", 7 ], [ "+", 2 ], [ " ", 3 ] ]
 ```
 
 ```sh
-    json-diff.js --full --raw-json <(echo '[1,["a","b"],4]') <(echo '[1,["a","c"],4]')
+    json-diff --full --raw-json <(echo '[1,["a","b"],4]') <(echo '[1,["a","c"],4]')
          [ [ " ", 1 ], [ "~", [ [ " ", "a" ], [ "-", "b" ], [ "+", "c" ] ] ], [ " ", 4 ] ]
 ```
 
@@ -154,14 +251,14 @@ Unless two arrays are equal, all array elements are transformed into 2-tuple arr
 - Unequal scalar values are replaced by an object containing the old and new value:
 
 ```sh
-    json-diff.js --full  --raw-json <(echo '{"a":4}') <(echo '{"a":5}')
+    json-diff --full  --raw-json <(echo '{"a":4}') <(echo '{"a":5}')
         { "a": { "__old": 4, "__new": 5 } }
 ```
 
 - Unequal arrays and objects are replaced by their diff:
 
 ```sh
-    json-diff.js --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"a":[4,6]}')
+    json-diff --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"a":[4,6]}')
         { "a": [ [ " ", 4 ], [ "-", 5 ], [ "+", 6 ] ] }
 ```
 
@@ -170,9 +267,9 @@ Unless two arrays are equal, all array elements are transformed into 2-tuple arr
 - Object keys that are deleted or added between two objects are marked as such:
 
 ```sh
-    json-diff.js --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"b":[4,5]}')
+    json-diff --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"b":[4,5]}')
         { "a__deleted": [ 4, 5 ], "b__added": [ 4, 5 ] }
-    json-diff.js --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"b":[4,6]}')
+    json-diff --full  --raw-json <(echo '{"a":[4,5]}') <(echo '{"b":[4,6]}')
         { "a__deleted": [ 4, 5 ], "b__added": [ 4, 6 ] }
 ```
 
@@ -181,14 +278,14 @@ Unless two arrays are equal, all array elements are transformed into 2-tuple arr
 - In regular, delta-only (non-"full") mode, equal properties and values are omitted:
 
 ```sh
-    json-diff.js --raw-json <(echo '{"a":4, "b":6}') <(echo '{"a":5,"b":6}')
+    json-diff --raw-json <(echo '{"a":4, "b":6}') <(echo '{"a":5,"b":6}')
         { "a": { "__old": 4, "__new": 5 } }
 ```
 
 - Equal array elements are represented by a one-tuple containing only a space " ":
 
 ```sh
-    json-diff.js --raw-json <(echo '[1,7,3]') <(echo '[1,2,3]')
+    json-diff --raw-json <(echo '[1,7,3]') <(echo '[1,2,3]')
         [ [ " " ], [ "-", 7 ], [ "+", 2 ], [ " " ] ]
 ```
 
@@ -197,7 +294,7 @@ Unless two arrays are equal, all array elements are transformed into 2-tuple arr
 Run:
 
 ```sh
-    bun run test
+  bun run test
 ```
 
 Output:
@@ -261,6 +358,8 @@ Output:
         ✔ should return [['+', <added item>], ..., ['+', <added item>]] for two arrays containing objects of 3 or more properties when the second array has extra values (fixes issue #57)
         ✔ should return [..., ['+', <added item>], ...] for two arrays when the second array has a new but nearly identical object added
         ✔ should return [..., ['~', <diff>], ...] for two arrays when an item has been modified
+        ✔ should correctly pick best match based on similarity during scalarize, i.e. class obj2[2] should not be selected as best match for obj1[0], instead order should remain unchanged with added class property for obj1[0]
+        ✔ should return [[' ', <unchanged item>], ['~', <diff>], [' ', <unchanged item>]] for two arrays when an item has been modified
       with reported bugs
         ✔ should handle type mismatch during scalarize
         ✔ should handle mixed scalars and non-scalars in scalarize
@@ -342,7 +441,7 @@ Output:
         ✔ should return undefined for two arrays with identical, repeated contents
         ✔ should return [..., ['-', <removed item>], ...] for two arrays when the second array is missing a value
         ✔ should return [..., ['+', <added item>], ...] for two arrays when the second array has an extra value
-        ✔ should return [..., ['~', <diff>], ...] for two arrays when an item has been modified
+        ✔ should return undefined for two arrays when an item has been modified
 
     diffString
       ✔ should produce the expected result for the example JSON files
@@ -358,7 +457,8 @@ Output:
       ✔ should return only old diffs - exchanged first and second json (changed)
       ✔ should return only old diffs - exchanged first and second json (deleted)
 
-    113 passing (176ms)
+
+    115 passing (32ms)
 </details>
 
 ## Change Log
@@ -387,4 +487,5 @@ Output:
 
 ## License
 
-© Andrey Tarantsov. Distributed under the MIT license.
+Copyright © 2026 Jed Luhmann. Distributed under the MIT license.<br>
+Copyright © 2015 Andrey Tarantsov. Distributed under the MIT license.

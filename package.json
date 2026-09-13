@@ -1,26 +1,38 @@
 {
-  "author": "Andrey Tarantsov <andreyvit@me.com>",
+  "author": "Jed Luhmann <github@jedluhmann.com>",
   "contributors": [
+    "Andrey Tarantsov <andreyvit@me.com>",
     "Gavriel Fleischer <flocsy@gmail.com>",
     "Eric Woudenberg <eaw@woudy.org>"
   ],
-  "name": "json-diff",
-  "description": "JSON diff",
-  "version": "1.0.6",
+  "name": "@jedluhmann/json-diff",
+  "description": "JSON diff, forked from https://github.com/andreyvit/json-diff",
+  "version": "1.0.0",
   "type": "module",
-  "homepage": "https://github.com/andreyvit/json-diff",
+  "homepage": "https://github.com/jedluhmann/json-diff",
   "license": "MIT",
   "repository": {
-    "url": "git@github.com:andreyvit/json-diff.git"
+    "url": "git@github.com:jedluhmann/json-diff.git"
   },
   "main": "lib/JsonDiff.js",
-  "bin": "bin/json-diff.js",
+  "bin": {
+    "json-diff": "bin/json-diff.js"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://npmjs.org"
+  },
   "scripts": {
     "test": "mocha test/**/*.spec.js",
     "test:coverage": "c8 mocha && open coverage/index.html",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{js,json,md}\""
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "release": "bun release.ts"
   },
   "dependencies": {
     "@ewoudenberg/difflib": "0.1.0",
@@ -30,6 +42,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.4.2",
     "c8": "^12.0.0",
     "chai": "^6.2.2",
     "coffeescript": "^2.6.1",

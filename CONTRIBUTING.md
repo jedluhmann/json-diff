@@ -8,10 +8,12 @@ Steps to a new release
     * A review and squash-merge of the PR
     * git checkout master
     * git pull
-    * npm ci
-    * npm run test
+    * rm -rf node_modules && bun install --frozen-lockfile
+    * bun build ./src/index.ts --outdir ./dist --target node # add this step if the projects is ever converted to typescript
+    * bun run test
     * update change log in README
     * git commit -a -m "Update README"; git push
-    * npm version <next.version.number>
-    * git push --tags; git push
-    * npm publish (get one-time NPM password from authy)
+    * bun run release <next.version.number>
+    git push --tags; git push
+    * bunx npm login (get one-time NPM password from authy)
+    * bun publish
