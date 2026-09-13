@@ -31,7 +31,8 @@
     "test:coverage": "c8 mocha && open coverage/index.html",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write \"**/*.{js,json,md}\""
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "release": "bun release.ts"
   },
   "dependencies": {
     "@ewoudenberg/difflib": "0.1.0",
