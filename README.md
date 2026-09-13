@@ -462,28 +462,12 @@ Output:
 </details>
 
 ## Change Log
-- 1.0.6 Comment out another debugging output.
-- 1.0.5 Comment out debugging output(!)
-- 1.0.4 Fix typo that broke -o/--output-keys
-- 1.0.3 Change from cli-color to colors to reduce package size.
-- 1.0.2 Add colorize and colorizeToCallback to module exports (Fix bug #103)
-- 1.0.1 Bug fixes: Properly compare date objects; properly exclude keys with -x; improve README readability.
-- 1.0.0 Properly distinguish list elements with identical strings of different types e.g. `["true"]` vs `[true]`, `["0"]` vs `[0]` (enabled by switching to a new difflib)
-- 0.10.0 Add --exclude-keys
-- 0.9.1 Fix bug #88
-- 0.9.0 Add --output-new-only option
-- 0.8.0 Add --keep-unchanged-values option
-- 0.7.4 Fix bug #76
-- 0.7.3 Revert use of ?? operator in 0.7.2 (which caused a breaking change)
-- 0.7.2 Add --maxElisions and --precision options.
-- 0.7.1 Add --output-keys option.
-- 0.7.0 Add --sort option.
-- 0.6.3 Fix ticket #68.
-- 0.6.2 Provide examples of setting mode from code.
-- 0.6.1 Return exit code 0. Update cli-color to the latest version.
-- 0.6.0 Convert project code to ES6.
-- 0.5.5 Fix bug in scalarize fuzzy compare logic.
-- 0.4.0 Add --keys-only feature.
+- 1.0.0 Forked from https://github.com/andreyvit/json-diff @ version 1.0.6    
+  - Optimizes and modernizes the codebase
+  - Can now run json-diff as a self-contained class
+  - Fixes bugs that occurred when diffing arrarys of objects
+  - New debug feature that displays fuzzy match data
+  - New playground feature that facilitates learning, experimentation and debugging.
 
 ## License
 
