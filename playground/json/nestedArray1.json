@@ -1,0 +1,8 @@
+[
+  {
+    "holes": [
+      {"depth":11.5,"diameter":8,"start":{"x":218,"y":241,"z":9},"end":{"x":220,"y":241,"z":-2.5},"plankFaceId":"0","name":"短木销_修改","type":"PLANK"},
+      {"depth":11.5,"diameter":8,"start":{"x":218,"y":241,"z":9},"end":{"x":220,"y":241,"z":-2.5},"plankFaceId":"0","name":"短木销_修改","type":"PLANK"}
+    ]
+  }
+]

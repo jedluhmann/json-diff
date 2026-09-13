@@ -1,0 +1,28 @@
+[
+  {
+    "type": "collection",
+    "format": "paragraph",
+    "class": "prose",
+    "data": [
+      {
+        "type": "verse",
+        "vn": 2
+      }
+    ]
+  },
+  {
+    "type": "linebreak",
+    "tag": "br"
+  },
+  {
+    "type": "collection",
+    "format": "poetry",
+    "class": "poetry",
+    "data": [
+      {
+        "type": "line",
+        "ln": 1
+      }
+    ]
+  }
+]
