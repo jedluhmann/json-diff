@@ -12,8 +12,9 @@ Steps to a new release
     * bun build ./src/index.ts --outdir ./dist --target node # add this step if the projects is ever converted to typescript
     * bun run test
     * update change log in README
-    * git commit -a -m "Update README"; git push
+    * git commit -a -m "Update README"; git push origin master
     * bun run release <next.version.number>
-    git push --tags; git push
+    * git push --tags; git push origin master
     * bunx npm login (get one-time NPM password from authy)
+    * bun publish --dry-run
     * bun publish
