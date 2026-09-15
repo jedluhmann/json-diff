@@ -42,9 +42,8 @@ jobs:
         run: npm publish --registry=https://registry.npmjs.org --provenance --access public
 
       - name: Publish to GitHub Packages
-        run: npm publish --registry=https://npm.pkg.github.com
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # Passes the token inline, stripping out the error-prone .npmrc generation
+        run: npm publish --registry=https://npm.pkg.github.com/ --//://github.com{{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         env:
