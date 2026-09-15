@@ -472,6 +472,7 @@ Output:
   - New debug feature that displays fuzzy match data
   - New playground feature that facilitates learning, experimentation and debugging.
 - 1.0.1 Added Husky and Commitlint and automated package deployment
+- 1.0.2 Deploy fix
 
 ## License
 
