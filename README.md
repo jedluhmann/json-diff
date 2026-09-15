@@ -477,6 +477,7 @@ Output:
 - 1.0.4 Deploy with bun
 - 1.0.5 Deploy fix - create temporary .npmrc
 - 1.0.6 Deploy fix
+- 1.0.7 Deploy fix
 
 ## License
 
