@@ -11,22 +11,30 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write # Required for Trusted Publishing / OIDC
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Install Bun instead of Node/npm
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: latest
+          node-version: 'lts/*'
+          registry-url: 'https://registry.npmjs.org' # 👈 Automatically configures OIDC for npm
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        # --ignore-scripts prevents Husky from running during installation
+        run: npm install --ignore-scripts --legacy-peer-deps
 
-      # Using github as a trusted publisher
+      - name: Run tests
+        run: npm test
+
+      - name: Remove husky before publish
+        # Bypasses Husky during the publish phase since we don't need it in CI
+        run: npm pkg delete scripts.prepare
+
       - name: Publish to npm
-        run: bun publish
+        run: npm publish --provenance --access public
 
       - name: Publish to GitHub Packages
         run: bun publish --registry=https://npm.pkg.github.com

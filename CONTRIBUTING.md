@@ -12,6 +12,9 @@ Steps to a new release
    - bun build ./src/index.ts --outdir ./dist --target node # add this step if the projects is ever converted to typescript
    - bun run test
    - update change log in README
-   - git commit -a -m "Update README"; git push origin master
+   - git commit -a -m "chore: update README"; git push origin master
    - bun pm version <next.version.number>
    - git push --follow-tags origin master
+   - npm stage list
+   - npm stage view <stage-id>
+   - npm stage approve <stage-id> or npm stage reject <stage-id>

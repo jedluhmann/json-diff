@@ -160,7 +160,7 @@ Raw JSON Output Option together with the "full" option
 
 When creating scripts to automate json-diff, you can silence the output by setting `jsonDiff.options = { silent: true, debug: false }`.
 
-You can also call replace the call to `exec()` with `diff()`. The only difference is that `jsonDiff.diff()` is synchronous and the return value is a diff object with the following properties: score, result, and equal.
+You can also replace the call to `exec()` with `diff()`. The only difference is that `jsonDiff.diff()` is synchronous and the return value is a diff object with the properties: score, result, and equal.
 
 Heres a quick example:
 
@@ -220,11 +220,11 @@ The script, `playground/jd-debug.ts`, offers a convenient way to experiment with
 
 ## Raw JSON Output Mode
 
-CLI option: -j or --raw-json
+CLI option: `-`j or `--raw-json`
 
 The Raw JSON mode outputs the return result of the `diff()`, as opposed to the standard red(-)/green(+) output like you see in a visual diff tool.
 
-This is useful for gainging a better understanding of how json-diff works as well as for programmatic use. Adding the `--full` option, includes all values (not just the differences). The examples below show return values for simple arrays and objects, but note that arrays and objects can be nested in one and another, in which case you will see a combination of the two.
+This is useful for gaining a better understanding of how json-diff works as well as for programmatic use. Adding the `--full` option, includes all values (not just the differences). The examples below show return values for simple arrays and objects, but note that arrays and objects can be nested in one and another, in which case you will see a combination of the two.
 
 ### ARRAYS
 
