@@ -471,6 +471,7 @@ Output:
   - Fixes bugs that occurred when diffing arrarys of objects
   - New debug feature that displays fuzzy match data
   - New playground feature that facilitates learning, experimentation and debugging.
+- 1.0.1 Added Husky and Commitlint and automated package deployment
 
 ## License
 
