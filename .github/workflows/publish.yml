@@ -42,7 +42,7 @@ jobs:
         run: npm publish --registry=https://registry.npmjs.org --provenance --access public
 
       - name: Publish to GitHub Packages
-        run: bun publish --registry=https://npm.pkg.github.com
+        run: npm publish --registry=https://npm.pkg.github.com
         env:
           NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
