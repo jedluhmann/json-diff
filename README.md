@@ -4,17 +4,19 @@ Does exactly what you think it does:
 
 ![Screenshot](https://github.com/andreyvit/json-diff/raw/master/doc/screenshot.png)
 
-> **Notice:** This is a modernized, actively maintained fork of the original `json-diff` project. 
+> **Notice:** This is a modernized, actively maintained fork of the original `json-diff` project.
 
 ### Why this fork?
-The original repository has accumulated unaddressed bugs and lacks recent updates. This fork was created to provide the community with an active release cycle for critical bug fixes and architectural modernizations. 
+
+The original repository has accumulated unaddressed bugs and lacks recent updates. This fork was created to provide the community with an active release cycle for critical bug fixes and architectural modernizations.
 
 **Key Improvements:**
-* **Fully Modernized Engine:** Re-architected code structure using modern JavaScript standards.
-* **Standalone Component:** Re-architected code to allow the `JsonDiff` class to be used as a standalone component in addition to the CLI.
-* **Added a Debug Option:** The debug feature ouputs a pivot table that displays the fuzzy scores that are computed when diffing arrays. When combined with the -v flag, the raw data that the pivot table is derived from is displayed as well. This is an incredibly useful feature for understanding how the diffing algorithm works.
-* **Bug Fixes:** Resolves critical long-standing issues, similar to those documented in the open PR [\[fix\]\[102\]Fix deep diffing issue for obj in array](https://github.com/andreyvit/json-diff/pull/125), which addresses [https://github.com/andreyvit/json-diff/issues/102](https://github.com/andreyvit/json-diff/issues/102).
-* **Playground:** New feature that facilitates learning, experimentation and debugging.
+
+- **Fully Modernized Engine:** Re-architected code structure using modern JavaScript standards.
+- **Standalone Component:** Re-architected the codebase to expose JsonDiff as a standalone component, allowing it to be used both as a programmatic library and via the CLI.
+- **Added a Debug Option:** The debug feature ouputs a pivot table that displays the fuzzy scores that are computed when diffing arrays. When combined with the -v flag, the raw data that the pivot table is derived from is displayed as well. This is an incredibly useful feature for understanding how the diffing algorithm works.
+- **Bug Fixes:** Resolves critical long-standing issues, similar to those documented in the open PR [\[fix\]\[102\]Fix deep diffing issue for obj in array](https://github.com/andreyvit/json-diff/pull/125), which addresses [https://github.com/andreyvit/json-diff/issues/102](https://github.com/andreyvit/json-diff/issues/102).
+- **Playground:** New feature that facilitates learning, experimentation and debugging.
 
 ---
 
@@ -33,14 +35,14 @@ Once installed, you can use it exactly like the original tool:
 ```bash
 json-diff file1.json file2.json
 ```
-*(Note: Depending on your system configuration, you can also execute it via `bunx @your-username/json-diff file1.json file2.json` without installing it globally).*
+
+_(Note: Depending on your system configuration, you can also execute it via `bunx @your-username/json-diff file1.json file2.json` without installing it globally)._
 
 ## Contribution policy
 
 1. This project is maintained thanks to your contributions! Please send pull requests.
 
 2. I will merge any pull request that adds something useful, does not break existing things, has reasonable code quality and provides/updates tests where appropriate.
-
 
 ## CLI Usage
 
@@ -95,7 +97,8 @@ In addition to the CLI, json-diff can also be included in your javascript applic
 
 ```js
 import { JsonDiff } from '@jedluhmann/json-diff';
-let options = {}, result;
+let options = {},
+  result;
 const jsonDiff = new JsonDiff(options);
 
 console.log(`\nawait jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });`);
@@ -119,7 +122,7 @@ result = await jsonDiff.exec({ foo: 'bar', b: 3 }, { foo: 'baz', b: 3 });
 
 Output from above:
 
-```json
+```js
 result = await jsonDiff.exec({ foo: 'bar' }, { foo: 'baz' });
  {
 -  foo: "bar"
@@ -157,13 +160,14 @@ Raw JSON Output Option together with the "full" option
 
 When creating scripts to automate json-diff, you can silence the output by setting `jsonDiff.options = { silent: true, debug: false }`.
 
-You can also call replace the call to `exec()` with `diff()`. The only difference is that `jsonDiff.diff()` is synchronous and the return value is a diff object with the following properties: score, result, and equal. 
+You can also call replace the call to `exec()` with `diff()`. The only difference is that `jsonDiff.diff()` is synchronous and the return value is a diff object with the following properties: score, result, and equal.
 
 Heres a quick example:
 
 ```js
 import { JsonDiff } from '@jedluhmann/json-diff';
-let options = {}, result;
+let options = {},
+  result;
 const jsonDiff = new JsonDiff(options);
 
 let objA = { foo: 'bar' };
@@ -183,7 +187,6 @@ score: 0, result: {"foo":{"__old":"bar","__new":"baz"}}, equal: false
 ## Playground
 
 The script, `playground/jd-debug.ts`, offers a convenient way to experiment with json-diff and provides some helpful examples to get you started. When this script has focus in VS Code, you can debug json-diff via the "Debug File" launch config. Simply set your break points and click the debug button.
-
 
 ## Features
 
@@ -219,10 +222,9 @@ The script, `playground/jd-debug.ts`, offers a convenient way to experiment with
 
 CLI option: -j or --raw-json
 
-The Raw JSON mode outputs the return result of the `diff()`, as opposed to the standard red(-)/green(+) output like you see in a visual diff tool. 
+The Raw JSON mode outputs the return result of the `diff()`, as opposed to the standard red(-)/green(+) output like you see in a visual diff tool.
 
 This is useful for gainging a better understanding of how json-diff works as well as for programmatic use. Adding the `--full` option, includes all values (not just the differences). The examples below show return values for simple arrays and objects, but note that arrays and objects can be nested in one and another, in which case you will see a combination of the two.
-
 
 ### ARRAYS
 
@@ -404,15 +406,15 @@ Output:
 
     diff({ outputKeys: foo,bar }
       ✔ should return keys foo and bar although they have no changes
-      ✔ should return keys foo (with addition) and bar (with no changes) 
-      ✔ should return keys foo and bar (with addition) 
+      ✔ should return keys foo (with addition) and bar (with no changes)
+      ✔ should return keys foo and bar (with addition)
       ✔ should return nothing as the entire object is equal, no matter that show keys has some of them
-      ✔ should return the keys of an entire object although it has no changes 
+      ✔ should return the keys of an entire object although it has no changes
 
     diff({ excludeKeys: foo,bar }
       ✔ shouldn't return keys foo and bar even thou they have changes
-      ✔ shouldn't return keys foo (with addition) and bar (with no changes) 
-      ✔ shouldn't return keys foo and bar (with addition) 
+      ✔ shouldn't return keys foo (with addition) and bar (with no changes)
+      ✔ shouldn't return keys foo and bar (with addition)
 
     diff({keysOnly: true})
       with simple scalar values
@@ -457,12 +459,13 @@ Output:
       ✔ should return only old diffs - exchanged first and second json (changed)
       ✔ should return only old diffs - exchanged first and second json (deleted)
 
-
     115 passing (32ms)
+
 </details>
 
 ## Change Log
-- 1.0.0 Forked from https://github.com/andreyvit/json-diff @ version 1.0.6    
+
+- 1.0.0 Forked from https://github.com/andreyvit/json-diff @ version 1.0.6
   - Optimizes and modernizes the codebase
   - Can now run json-diff as a self-contained class
   - Fixes bugs that occurred when diffing arrarys of objects

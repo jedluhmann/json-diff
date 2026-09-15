@@ -1,7 +1,7 @@
-*.coffee
 /example
 /doc
+/playground
 /test
 /lib-cov
 coverage.html
-yarn.lock
+bun.lock
