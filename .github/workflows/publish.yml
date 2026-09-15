@@ -14,7 +14,7 @@ jobs:
       id-token: write # Required for Trusted Publishing / OIDC
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Install Bun instead of Node/npm
       - name: Setup Bun
