@@ -478,6 +478,7 @@ Output:
 - 1.0.5 Deploy fix - create temporary .npmrc
 - 1.0.6 Deploy fix
 - 1.0.7 Deploy fix
+- 1.0.8 Deploy fix - get rid of warning for Node.js 20 deprecation
 
 ## License
 
