@@ -44,7 +44,11 @@ jobs:
       - name: Publish to GitHub Packages
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: bun publish --registry=https://npm.pkg.github.com
+        # Create temporary .npmrc and ensure it is removed
+        run: |
+          trap 'rm -f .npmrc' EXIT
+          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          bun publish --registry=https://npm.pkg.github.com/
 
       - name: Create GitHub Release
         env:
