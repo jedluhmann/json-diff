@@ -473,6 +473,7 @@ Output:
   - New playground feature that facilitates learning, experimentation and debugging.
 - 1.0.1 Added Husky and Commitlint and automated package deployment
 - 1.0.2 Deploy fix
+- 1.0.3 Deploy fix
 
 ## License
 
