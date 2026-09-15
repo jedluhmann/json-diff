@@ -23,8 +23,7 @@
     "lib"
   ],
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npmjs.org"
+    "access": "public"
   },
   "scripts": {
     "test": "mocha test/**/*.spec.js",

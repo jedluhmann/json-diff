@@ -20,7 +20,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          registry-url: 'https://registry.npmjs.org' # 👈 Automatically configures OIDC for npm
+
+      - name: Update npm to latest
+        # Critical for reliable OIDC Trusted Publishing handshakes
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         # --ignore-scripts prevents Husky from running during installation
@@ -28,13 +31,15 @@ jobs:
 
       - name: Run tests
         run: npm test
+        env:
+          FORCE_COLOR: "1"  # Forces color support detection in headless CI environments
 
       - name: Remove husky before publish
         # Bypasses Husky during the publish phase since we don't need it in CI
         run: npm pkg delete scripts.prepare
 
       - name: Publish to npm
-        run: npm publish --provenance --access public
+        run: npm publish --registry=https://registry.npmjs.org --provenance --access public
 
       - name: Publish to GitHub Packages
         run: bun publish --registry=https://npm.pkg.github.com
