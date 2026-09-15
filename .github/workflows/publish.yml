@@ -16,34 +16,35 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # Install Bun instead of Node/npm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 'lts/*'
-
-      - name: Update npm to latest
-        # Critical for reliable OIDC Trusted Publishing handshakes
-        run: npm install -g npm@latest
+          bun-version: latest
 
       - name: Install dependencies
-        # --ignore-scripts prevents Husky from running during installation
-        run: npm install --ignore-scripts --legacy-peer-deps
+        run: bun install --frozen-lockfile --ignore-scripts
 
       - name: Run tests
-        run: npm test
         env:
           FORCE_COLOR: "1"  # Forces color support detection in headless CI environments
+        run: bun test
 
       - name: Remove husky before publish
-        # Bypasses Husky during the publish phase since we don't need it in CI
-        run: npm pkg delete scripts.prepare
+        run: bun pm pkg delete scripts.prepare
 
+      - name: Update npm to latest
+        # Update to latest for reliable OIDC Trusted Publishing handshakes
+        run: npm install -g npm@latest
+
+      # Using github as a trusted publisher
       - name: Publish to npm
         run: npm publish --registry=https://registry.npmjs.org --provenance --access public
 
       - name: Publish to GitHub Packages
-        # Passes the token inline, stripping out the error-prone .npmrc generation
-        run: npm publish --registry=https://npm.pkg.github.com/ --//://github.com{{ secrets.GITHUB_TOKEN }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bun publish --registry=https://npm.pkg.github.com
 
       - name: Create GitHub Release
         env:
