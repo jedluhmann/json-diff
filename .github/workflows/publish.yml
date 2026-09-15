@@ -47,8 +47,8 @@ jobs:
         # Create temporary .npmrc and ensure it is removed
         run: |
           trap 'rm -f .npmrc' EXIT
-          echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
-          bun publish --registry=https://npm.pkg.github.com/
+          echo "//npm.pkg.github.com/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          npm publish --registry=https://npm.pkg.github.com/
 
       - name: Create GitHub Release
         env:
