@@ -1,0 +1,43 @@
+name: Publish to npm and GitHub Packages with Bun
+
+on:
+  push:
+    tags:
+      - "v*" # Triggers the workflow when you push a tag like v1.0.4
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install Bun instead of Node/npm
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Using github as a trusted publisher
+      - name: Publish to npm
+        run: bun publish
+
+      - name: Publish to GitHub Packages
+        run: bun publish --registry=https://npm.pkg.github.com
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Automatically provided by GitHub
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --repo ${{ github.repository }} \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
