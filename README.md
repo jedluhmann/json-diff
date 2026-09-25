@@ -465,6 +465,7 @@ Output:
 
 ## Change Log
 
+- 1.0.9 Added an ambient module declaration to fix TypeScript warnings
 - 1.0.8 Deploy fix - get rid of warning for Node.js 20 deprecation
 - 1.0.7 Deploy fix
 - 1.0.6 Deploy fix
