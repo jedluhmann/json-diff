@@ -36,7 +36,7 @@ Once installed, you can use it exactly like the original tool:
 json-diff file1.json file2.json
 ```
 
-_(Note: Depending on your system configuration, you can also execute it via `bunx @your-username/json-diff file1.json file2.json` without installing it globally)._
+_(Note: Depending on your system configuration, you can also execute it via `bunx @jed-luhmann/json-diff file1.json file2.json` without installing it globally)._
 
 ## Contribution policy
 
@@ -465,20 +465,20 @@ Output:
 
 ## Change Log
 
+- 1.0.8 Deploy fix - get rid of warning for Node.js 20 deprecation
+- 1.0.7 Deploy fix
+- 1.0.6 Deploy fix
+- 1.0.5 Deploy fix - create temporary .npmrc
+- 1.0.4 Deploy with bun
+- 1.0.3 Deploy fix
+- 1.0.2 Deploy fix
+- 1.0.1 Added Husky and Commitlint and automated package deployment
 - 1.0.0 Forked from https://github.com/andreyvit/json-diff @ version 1.0.6
   - Optimizes and modernizes the codebase
   - Can now run json-diff as a self-contained class
   - Fixes bugs that occurred when diffing arrarys of objects
   - New debug feature that displays fuzzy match data
   - New playground feature that facilitates learning, experimentation and debugging.
-- 1.0.1 Added Husky and Commitlint and automated package deployment
-- 1.0.2 Deploy fix
-- 1.0.3 Deploy fix
-- 1.0.4 Deploy with bun
-- 1.0.5 Deploy fix - create temporary .npmrc
-- 1.0.6 Deploy fix
-- 1.0.7 Deploy fix
-- 1.0.8 Deploy fix - get rid of warning for Node.js 20 deprecation
 
 ## License
 
