@@ -20,7 +20,8 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "index.d.ts"
   ],
   "publishConfig": {
     "access": "public"
